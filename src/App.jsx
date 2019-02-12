@@ -16,6 +16,7 @@ class App extends Component {
     );
   }
 }
+
 export default App;
 // state.messages = [
 //   {

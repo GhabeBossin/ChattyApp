@@ -1,9 +1,9 @@
 {
-  "name": "react-simple-boilerplate",
+  "name": "Chatty",
   "version": "1.0.0",
-  "description": "LHL Boilerplate for ReactJS projects- Ghabe",
+  "description": "LHL Chatty App- Ghabe",
   "scripts": {
-    "lint": "eslint --ext .jsx .js src",
+    "lint": "eslint --ext '.jsx, .js' src",
     "start": "node server.js"
   },
   "repository": {

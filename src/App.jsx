@@ -29,6 +29,16 @@ class App extends Component {
   }
 
   componentDidMount() {
+    const socket = new WebSocket(
+      'ws://localhost:3001'
+      // in optional DOMString protocols
+      );
+      console.log('Connected to Server')
+
+    // socket.addEventListener('open', function (event) {
+    //   socket.send('Hello Server!');
+    // });
+
     // console.log('componentDidMount <App />');
     // setTimeout(() => {
     //   console.log('Simulating incoming message');
@@ -38,33 +48,11 @@ class App extends Component {
 
     //   this.setState({messages: messages})
     // }, 3000);
-
-    // handleNameSub(event) {
-    //   // if (event.key !== 'Enter') {
-    //   //   return
-    //   // }
-    //   // console.log(event.key)
-    //   const newCurrentUser = {name: event.target.value}
-    //   console.log(event.target.value)
-    //   this.setState({currentUser: newCurrentUser})
-    // }
-
-    // handleMessageSub(event) {
-    //   if (event.key !== 'Enter') {
-    //     return
-    //   }
-    //   console.log(event.target.value);
-    //   const newMessage = {username: this.state.currentUser.name, content: event.target.value, id: randomstring.generate(9) }
-    //   const messages = this.state.messages.concat(newMessage)
-    //   this.setState({messages: messages});
-    //   input.value = '';
-    // }
   }
 
   handleNameSub(event) {
     console.log(event.target);
     const newCurrentUser = {name: event.target.value}
-    // console.log(event.target.value)
     this.setState({currentUser: newCurrentUser})
 
   }
@@ -73,7 +61,6 @@ class App extends Component {
     if (event.key !== 'Enter') {
       return
     }
-    // console.log(event.target.value);
     const newMessage = {username: this.state.currentUser.name, content: event.target.value, id: randomstring.generate(9) }
     const messages = this.state.messages.concat(newMessage)
     this.setState({messages: messages});

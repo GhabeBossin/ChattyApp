@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:ringringlemurpants/react-simple-bp.git"
+    "url": "git@github.com:GhabeBossin/ChattyApp.git"
   },
   "keywords": [
     "react",
@@ -22,7 +22,7 @@
   "author": "Noah-Jerome Lotzer <n.lotzer@neusta.de>, Ghabe Bossin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ringringlemurpants/react-simple-bp.git"
+    "url": "https://github.com/GhabeBossin/ChattyApp.git"
   },
   "homepage": ".",
   "engines": {

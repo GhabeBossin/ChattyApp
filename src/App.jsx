@@ -77,7 +77,6 @@ class App extends Component {
     const newMessage = {username: this.state.currentUser.name, content: event.target.value, id: randomstring.generate(9) }
     const messages = this.state.messages.concat(newMessage)
     this.setState({messages: messages});
-    // input.value = '';
   }
 
   render() {

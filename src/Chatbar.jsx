@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
 
-// {this.props.currentUser}
-
 class Chatbar extends Component {
   render() {
     return (
       <footer className='chatbar'>
-        <input name='userField' value={this.props.value} onKeyUp={this.props.handleNameSub} className='chatbarUsername' placeholder='Your Name (Optional)' />
+        <input name='userField' value={this.props.value} onKeyUp={this.props.handleNameSub} className='chatbarUsername' placeholder='Set name (Optional), hit ENTER' />
 
         <input name='msgField' value={this.props.value} onKeyUp={this.props.handleMessageSub} type='text' className='chatbarMessage' placeholder='Type a message and hit ENTER' />
       </footer>

@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
+
 // WS server
-const express = require('express');
+const PORT         = 3001;
+const express      = require('express');
 const SocketServer = require('ws').Server;
-const uuidv1 = require('uuid/v1');
-// Set the port to 3001
-const PORT = 3001;
-// Create a new express server
-const server = express()
-  // Make the express server serve static assets (html, javascript, css) from the /public folder
+const uuidv1       = require('uuid/v1');
+const server       = express()
+
+// Make the express server serve static assets (html, javascript, css) from the /public folder TODO: ??? what does this mean?
   .use(express.static('public'))
   .listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
 
@@ -19,8 +19,10 @@ wss.on('connection', (ws) => {
   console.log('Client connected');
 
   ws.on('message', function incoming(data) {
-    const parsedMsg = JSON.parse(data);
-    // console.log(`USER: ${parsedMsg.username}, MESSAGE CONTENT:${parsedMsg.content}`);
+    const parsedMsg   = JSON.parse(data);
+    if (parsedMsg.username === 'Anonymous') {
+      //apply sillyname instead, make sure each user keeps the same sillyname unless they change it.
+    }
     const sendMsgBack = {
       id      : uuidv1(),
       type    : 'incomingMessage',
@@ -29,14 +31,12 @@ wss.on('connection', (ws) => {
     }
     const stringifyMsgBack = JSON.stringify(sendMsgBack);
     wss.clients.forEach(function each(client) {
-      // if (client !== ws && client.readyState === WebSocket.OPEN) {
-        console.log('STRINGED',stringifyMsgBack);
+      if (client.readyState === WebSocket.OPEN) { //client !== ws && 
         client.send(stringifyMsgBack);
-      // }
+      }
     });
   });
 
-  // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => console.log('Client disconnected'));
 });
 

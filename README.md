@@ -1,6 +1,8 @@
 React Boilerplate
 =====================
 
+<!-- TODO: check all dependencies at end of project and remove them if not using anymore (randomstring, sillyname) -->
+
 A minimal and light dev environment for ReactJS.
 
 ### Usage

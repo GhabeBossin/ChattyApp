@@ -14,11 +14,13 @@ class App extends Component {
       messages: [
         {
           id: 1,
+          type: 'incomingMessage',
           username: 'Bob',
           content: 'Has anyone seen my marbles?',
         },
         {
           id: 2,
+          type: 'incomingNotification',
           username: 'Anonymous',
           content: 'No, I think you lost them. You lost your marbles Bob. You lost them for good.'
         }

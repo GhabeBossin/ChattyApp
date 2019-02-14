@@ -1,20 +1,36 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Message from './Message.jsx';
+// import { IncomingMessage } from 'http';
 
 class MessageList extends Component {
-
   render() {
-    const messageitem = this.props.messages.map(message => (
+    const messageItem = this.props.messages.map(message => (
       <Message key={message.id} username={message.username} content={message.content} />
     ))
+    const
 
-    return(
+    const messageOrNotify = message.type === 'incomingMessage' ?
+    messageItem : 
+    return (
       <main className="messagelist">
         {messageitem}
       </main>
     )
   }
+  // return (
+  //   <main className="messagelist">
+  //     {messageitem}
+  //   </main>
+  // )
+  // } else if (this.props.messages.type === 'incomingNotification') {
+  //   return (
+  //     <main className="messagelist">
+  //       {messageitem}
+  //     </main>
+  //   )
 }
+
+
 
 export default MessageList;
 

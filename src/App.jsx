@@ -2,70 +2,87 @@
 import React, { Component } from 'react';
 import MessageList from './MessageList.jsx';
 import Chatbar from './Chatbar.jsx';
-import randomstring from 'randomstring'
-
 
 class App extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      currentUser: {name: 'Bob'}, // optional. if currentUser is not defined, it means the user is Anonymous
+      // optional. if currentUser is not defined, use Anonymous
+      currentUser: {name: 'Anonymous'},
       messages: [
-        {
-          id: 1,
-          type: 'incomingMessage',
-          username: 'Bob',
-          content: 'Has anyone seen my marbles?',
-        },
-        {
-          id: 2,
-          type: 'incomingNotification',
-          username: 'Anonymous',
-          content: 'No, I think you lost them. You lost your marbles Bob. You lost them for good.'
-        }
+        // {
+        //   id: 1,
+        //   type: 'incomingMessage',
+        //   username: 'Bob',
+        //   content: 'Has anyone seen my marbles?',
+        // },
+        // { //rebuild this yeah
+        //   id: 2,
+        //   type: 'incomingMessage',
+        //   username: 'Anonymous',
+        //   content: 'No, I think you lost them. You lost your marbles Bob. You lost them for good.'
+        // },
+        // {
+        //   id: 3,
+        //   type: 'incomingNotification',
+        //   username: 'Anonymous',
+        //   content: 'A notification example'
+        // }
       ]
     }
     this.handleMessageSub = this.handleMessageSub.bind(this)
     this.handleNameSub = this.handleNameSub.bind(this)
-  }
+    // this.socket = this.socket.bind(this)
+  ;}
 
   componentDidMount() {
-    const socket = new WebSocket(
+    this.socket = new WebSocket(
       'ws://localhost:3001'
-      // in optional DOMString protocols
-      );
-      console.log('Connected to Server')
-
-    // socket.addEventListener('open', function (event) {
-    //   socket.send('Hello Server!');
-    // });
-
-    // console.log('componentDidMount <App />');
-    // setTimeout(() => {
-    //   console.log('Simulating incoming message');
-    //   // Add a new message to the list of messages in the data store
-    //   const newMessage = {id: 3, username: 'Michelle', content: 'Hello there!'};
-    //   const messages = this.state.messages.concat(newMessage)
-
-    //   this.setState({messages: messages})
-    // }, 3000);
+    );
+    // console.log('Connected to Server')
+    this.socket.onmessage = (event) => {
+      // this.socket.send('Hello Server!');
+      const returnedMsg  = JSON.parse(event.data);
+      console.log(returnedMsg);
+      const returnedUser = returnedMsg.username;
+      console.log(returnedUser);
+      const returnedId   = returnedMsg.id;
+      const returnedType = returnedMsg.type;
+      const returnedContent = returnedMsg.content
+      let message = {
+        id      : returnedId,
+        type    : returnedType,
+        username:returnedUser,
+        content :returnedContent
+      }
+      this.setState({
+        currentUser: returnedUser,
+        messages: [...this.state.messages, message] // <- this creates a shallow copy of the existing messages and appends the newest // I want to reference this, leave it. <3
+      }, () => { console.log(this.state.currentUser); })
+    }
   }
 
   handleNameSub(event) {
-    console.log(event.target);
-    const newCurrentUser = {name: event.target.value}
-    this.setState({currentUser: newCurrentUser})
-
+    if (event.key !== 'Enter') {
+      return
+    }
+    let newCurrentUser = {name: event.target.value}
+    console.log(event.target.value)
+    event.target.name === 'userField' ?
+    this.setState({currentUser: newCurrentUser}) 
+    : console.log('nope');
   }
 
   handleMessageSub(event) {
     if (event.key !== 'Enter') {
       return
     }
-    const newMessage = {username: this.state.currentUser.name, content: event.target.value, id: randomstring.generate(9) }
-    const messages = this.state.messages.concat(newMessage)
-    this.setState({messages: messages});
+    const newMsgToServer = {
+      username: this.state.currentUser.name,
+      content : event.target.value
+    };
+    this.socket.send(JSON.stringify(newMsgToServer));
+    event.target.value = '';
   }
 
   render() {
@@ -82,3 +99,13 @@ class App extends Component {
 }
 
 export default App;
+
+// OLD DISPLAY MESSAGE CODE {
+
+  // import { IncomingMessage } from 'http';
+
+  // const newMessage = {username: this.state.currentUser.name, content: event.target.value, id: randomstring.generate(9), type: 'incomingMessage' }
+  // const messages = this.state.messages.concat(newMessage)
+  // this.setState({messages: messages});
+
+// }

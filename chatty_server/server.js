@@ -16,10 +16,10 @@ const wss = new SocketServer({ server });
 // Set up a callback that will run when a client connects to the server
 // When a client connects they get a socket, represented by the ws parameter in the callback.
 wss.on('connection', (ws) => {
-  console.log('Client connected');
+  console.log('New client connection!');
 
-  const clients = wss.clients;
-  console.log('on connection clientCount', clients.size);
+  const clientCount = wss.clients.size;
+  console.log('number of clients connected:', clientCount);
 
 
   ws.on('message', function incoming(data) {
@@ -53,11 +53,10 @@ wss.on('connection', (ws) => {
     }
   });
 
-  // ws.on('close', () => {} console.log('Client disconnected'));
-  ws.on('close', () => {} console.log('Client disconnected'));
-  le
-  console.log('on close clientCount', clients);
-
+  ws.on('close', () => {
+    console.log('Someone left :(')
+    console.log('number of clients connected: ', clientCount);
+  });
 
 });
 

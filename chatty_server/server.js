@@ -29,6 +29,7 @@ wss.on('connection', (ws) => {
   console.log('New client connection!');
 
   let incomingClientCount = {
+    type  : 'incomingClientCount',
     number: wss.clients.size
   }
 
@@ -36,6 +37,7 @@ wss.on('connection', (ws) => {
 
   ws.on('message', function incoming(data) {
     const parsedData = JSON.parse(data);
+
     if (parsedData.type === 'postMessage') {
       const incomingMessage = {
         id      : uuidv1(),
@@ -44,11 +46,13 @@ wss.on('connection', (ws) => {
         content : parsedData.content
       }
       const stringifyData = JSON.stringify(incomingMessage);
+
       wss.clients.forEach(function each(client) {
-        if (client.readyState === WSServer.OPEN) { //client !== ws && 
+        if (client.readyState === WSServer.OPEN) { //client !== ws &&
           client.send(stringifyData);
         }
       });
+
     } else if (parsedData.type === 'postNotification') {
       const incomingNotification = {
         id      : uuidv1(),
@@ -67,6 +71,7 @@ wss.on('connection', (ws) => {
 
   ws.on('close', () => {
     let incomingClientCount = {
+      type  : 'incomingClientCount',
       number: wss.clients.size
     }
     wss.broadcast(JSON.stringify(incomingClientCount));

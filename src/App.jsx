@@ -1,16 +1,17 @@
 /* eslint-disable no-console */
 
 // App
-import React, { Component } from 'react';
-import MessageList from './MessageList.jsx';
-import Chatbar from './Chatbar.jsx';
+import React, { Component } from 'react'
+import MessageList from './MessageList.jsx'
+import Chatbar from './Chatbar.jsx'
+import sillyname from 'sillyname'
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // optional. if currentUser is not defined, use Anonymous or maybe sillyname?
-      currentUser: {name: 'Anonymous'},
+      //generates sillyname for user until user sets their name
+      currentUser: {name: sillyname()},
       messages   : [],
       clients    : undefined
     }
@@ -22,10 +23,20 @@ class App extends Component {
     this.socket = new WebSocket(
       'ws://localhost:3001'
     );
-    console.log('Yeah baby yeaaaah!');
+    console.log('Yeah baby yeaaaah!')
 
     this.socket.onmessage = (event) => {
       const parsedData = JSON.parse(event.data);
+
+      if (parsedData.type === 'incomingClientCount') {
+        let client = {
+          number  : parsedData.number
+        }
+
+        this.setState({
+          clients: client.number
+        })
+      }
 
       let message = {
         id      : parsedData.id,
@@ -33,15 +44,9 @@ class App extends Component {
         username: parsedData.username,
         content : parsedData.content
       }
-      console.log(client);
-      let client = {
-        number  : parsedData.number
-      }
-      console.log(client),
       this.setState({
-        // currentUser: {name: parsedData.username}, why did I have this??
-        messages: [...this.state.messages, message],
-        clients : client.number
+        // currentUser: {name: event.target.value},
+        messages   : [...this.state.messages, message]
       })
     }
   }
@@ -50,7 +55,8 @@ class App extends Component {
     if (event.key !== 'Enter') {
       return
     }
-    let newCurrentUser = {name: event.target.value};
+    let newCurrentUser = {name: event.target.value}
+    console.log(newCurrentUser);
     let postNotification = {
       type    : 'postNotification',
       username: newCurrentUser.name,
@@ -67,17 +73,18 @@ class App extends Component {
     if (event.key !== 'Enter') {
       return
     }
+
     const postMessage = {
       type    : 'postMessage',
       username: this.state.currentUser.name,
       content : event.target.value
-    };
+    }
+
     this.socket.send(JSON.stringify(postMessage));
-    event.target.value = '';
+    event.target.value = ''
   }
 
   render() {
-    console.log('after setstate:', this.state.clients)
     return (
       <div className="container">
         <nav className="navbar">
@@ -87,7 +94,7 @@ class App extends Component {
         <MessageList messages={this.state.messages} />
         <Chatbar currentUser={this.state.currentUser} handleNameSub={this.handleNameSub} handleMessageSub={this.handleMessageSub} />
       </div>
-    );
+    )
   }
 }
 

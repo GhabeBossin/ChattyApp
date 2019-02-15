@@ -12,7 +12,6 @@ class Chatbar extends Component {
   }
 }
 
-
 // TODO: user cannot change their name to nothing, validate
 export default Chatbar;
 

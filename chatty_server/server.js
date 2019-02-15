@@ -4,6 +4,7 @@
 const PORT         = 3001;
 const express      = require('express');
 const SocketServer = require('ws').Server;
+const WSServer     = require('ws')
 const uuidv1       = require('uuid/v1');
 const server       = express()
 
@@ -13,14 +14,26 @@ const server       = express()
 
 // Create the WebSockets server
 const wss = new SocketServer({ server });
+
+wss.broadcast = function broadcast(data) {
+  wss.clients.forEach(function each(client) {
+    if (client.readyState === WSServer.OPEN) { //client === ws && 
+      client.send(data);
+    }
+  })
+}
+
 // Set up a callback that will run when a client connects to the server
 // When a client connects they get a socket, represented by the ws parameter in the callback.
+
 wss.on('connection', (ws) => {
   console.log('New client connection!');
 
-  const clientCount = wss.clients.size;
-  console.log('number of clients connected:', clientCount);
+  let incomingClientCount = {
+    number: wss.clients.size
+  }
 
+  wss.broadcast(JSON.stringify(incomingClientCount));
 
   ws.on('message', function incoming(data) {
     const parsedData = JSON.parse(data);
@@ -33,9 +46,9 @@ wss.on('connection', (ws) => {
       }
       const stringifyData = JSON.stringify(incomingMessage);
       wss.clients.forEach(function each(client) {
-        // if (client !== ws && client.readyState === WebSocket.OPEN) {
+        if (client.readyState === WSServer.OPEN) { //client !== ws && 
           client.send(stringifyData);
-        // }
+        }
       });
     } else if (parsedData.type === 'postNotification') {
       const incomingNotification = {
@@ -46,16 +59,19 @@ wss.on('connection', (ws) => {
       }
       const stringifyData = JSON.stringify(incomingNotification);
       wss.clients.forEach(function each(client) {
-        // if (client !== ws && client.readyState === WebSocket.OPEN) {
+        if (client.readyState === WSServer.OPEN) {
           client.send(stringifyData);
-        // }
+        }
       });
     }
   });
 
   ws.on('close', () => {
+    let incomingClientCount = {
+      number: wss.clients.size
+    }
+    wss.broadcast(JSON.stringify(incomingClientCount));
     console.log('Someone left :(')
-    console.log('number of clients connected: ', clientCount);
   });
 
 });

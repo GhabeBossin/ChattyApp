@@ -11,7 +11,8 @@ class App extends Component {
     this.state = {
       // optional. if currentUser is not defined, use Anonymous or maybe sillyname?
       currentUser: {name: 'Anonymous'},
-      messages   : []
+      messages   : [],
+      clients    : undefined
     }
     this.handleMessageSub = this.handleMessageSub.bind(this)
     this.handleNameSub    = this.handleNameSub.bind(this)
@@ -22,17 +23,25 @@ class App extends Component {
       'ws://localhost:3001'
     );
     console.log('Yeah baby yeaaaah!');
+
     this.socket.onmessage = (event) => {
       const parsedData = JSON.parse(event.data);
+
       let message = {
         id      : parsedData.id,
         type    : parsedData.type,
         username: parsedData.username,
         content : parsedData.content
       }
+      console.log(client);
+      let client = {
+        number  : parsedData.number
+      }
+      console.log(client),
       this.setState({
         // currentUser: {name: parsedData.username}, why did I have this??
-        messages   : [...this.state.messages, message]
+        messages: [...this.state.messages, message],
+        clients : client.number
       })
     }
   }
@@ -68,10 +77,12 @@ class App extends Component {
   }
 
   render() {
+    console.log('after setstate:', this.state.clients)
     return (
       <div className="container">
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
+          <span className="onlineCount">{this.state.clients} users online</span>
         </nav>
         <MessageList messages={this.state.messages} />
         <Chatbar currentUser={this.state.currentUser} handleNameSub={this.handleNameSub} handleMessageSub={this.handleMessageSub} />

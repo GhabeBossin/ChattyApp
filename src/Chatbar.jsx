@@ -12,6 +12,8 @@ class Chatbar extends Component {
   }
 }
 
+
+// TODO: user cannot change their name to nothing
 export default Chatbar;
 
 {/* DON'T DELETE: defaultValue={this.props.currentUser.name} */}

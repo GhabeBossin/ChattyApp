@@ -11,7 +11,7 @@ class App extends Component {
     super(props);
     this.state = {
       //generates sillyname for user until user sets their name
-      currentUser: {name: sillyname()},
+      currentUser: {name: sillyname(), color: ['rebeccapurple', 'teal', 'green', 'orange']},
       messages   : [],
       clients    : undefined
     }
@@ -51,19 +51,32 @@ class App extends Component {
     }
   }
 
+  checkForAlphaNum = value => {
+    for(let char of value){
+      if(char !== ' ') {
+        return false
+      }
+    }
+    return true;
+  }
+
   handleNameSub(event) {
     if (event.key !== 'Enter') {
       return
+    } else if (event.target.value.length < 1) {
+      return
+    } else if (this.checkForAlphaNum(event.target.value)) {
+      return
     }
-    let newCurrentUser = {name: event.target.value}
-    console.log(newCurrentUser);
+    let newCurrentUser   = {name: event.target.value}
     let postNotification = {
       type    : 'postNotification',
       username: newCurrentUser.name,
       content : `User ${this.state.currentUser.name} has changed their name to ${newCurrentUser.name}`
     }
+
     this.socket.send(JSON.stringify(postNotification))
-    console.log(this.state.currentUser.name, newCurrentUser)
+
     event.target.name === 'userField' ?
     this.setState({currentUser: newCurrentUser})
     : console.log('error: not userField');

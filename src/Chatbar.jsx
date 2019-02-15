@@ -13,7 +13,7 @@ class Chatbar extends Component {
 }
 
 
-// TODO: user cannot change their name to nothing
+// TODO: user cannot change their name to nothing, validate
 export default Chatbar;
 
 {/* DON'T DELETE: defaultValue={this.props.currentUser.name} */}

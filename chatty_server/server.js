@@ -25,7 +25,6 @@ wss.broadcast = function broadcast(data) {
 
 // Set up a callback that will run when a client connects to the server
 // When a client connects they get a socket, represented by the ws parameter in the callback.
-
 wss.on('connection', (ws) => {
   console.log('New client connection!');
 

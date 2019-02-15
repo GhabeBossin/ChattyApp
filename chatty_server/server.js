@@ -1,18 +1,18 @@
 /* eslint-disable no-console */
 
 // WS server
-const PORT         = 3001;
+const PORT         = 3001
 const express      = require('express')
 const SocketServer = require('ws').Server
 const WSSocket     = require('ws')
 const uuidv1       = require('uuid/v1')
 const server       = express()
-// Make the express server serve static assets (html, javascript, css) from the /public folder TODO:
+// Make the express server serve static assets (html, javascript, css) from the /public folder
   .use(express.static('public'))
-  .listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
+  .listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`))
 
 // Create the WebSockets server
-const wss = new SocketServer({ server });
+const wss = new SocketServer({ server })
 
 let incomingClientCount = {
   id    : undefined, //uuidv1
@@ -22,8 +22,8 @@ let incomingClientCount = {
 
 wss.broadcast = function broadcast(data) {
   wss.clients.forEach(function each(client) {
-    if (client.readyState === WSSocket.OPEN) { //client !== ws &&
-      client.send(data);
+    if (client.readyState === WSSocket.OPEN) {
+      client.send(data)
     }
   })
 }
@@ -50,7 +50,7 @@ wss.on('connection', (ws) => {
 
       wss.clients.forEach(function each(client) {
         if (client.readyState === WSSocket.OPEN) { //client !== ws &&
-          client.send(stringifyData);
+          client.send(stringifyData)
         }
       })
 
@@ -61,11 +61,11 @@ wss.on('connection', (ws) => {
         username: parsedData.username,
         content : parsedData.content
       }
-      const stringifyData = JSON.stringify(incomingNotification);
+      const stringifyData = JSON.stringify(incomingNotification)
 
       wss.clients.forEach(function each(client) {
         if (client.readyState === WSSocket.OPEN) {
-          client.send(stringifyData);
+          client.send(stringifyData)
         }
       })
     }
@@ -74,7 +74,7 @@ wss.on('connection', (ws) => {
   ws.on('close', () => {
     incomingClientCount.number = wss.clients.size
     incomingClientCount.id = uuidv1()
-    wss.broadcast(JSON.stringify(incomingClientCount));
+    wss.broadcast(JSON.stringify(incomingClientCount))
     console.log('Someone left :(')
   })
 })

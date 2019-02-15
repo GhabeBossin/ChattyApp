@@ -1,92 +1,113 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css");
 
-body {
-  background: #ffffff;
-  color: black;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 14px;
-  margin: 70px 0;
-}
+$gentlegreen: #6cc564;
+$lightgentle: lighten($gentlegreen, 30%);
+$darkgentle : darken($gentlegreen, 30%);
+$riverblue  : #06374b;
 
-h1 {
-  color: tomato;
+body {
+  background : #ffffff;
+  color      : $riverblue;
+  font-family: 'Open Sans', sans-serif;
+  font-size  : 14px;
+  margin     : 70px 0;
+  height     : 100%
 }
 
 .chatbar {
-  background: tomato;
-  border-top: 1px solid black;
-  bottom: 0;
-  display: flex;
-  left: 0;
-  padding: 5px;
-  position: fixed;
-  right: 0;
+  background: $gentlegreen;
+  border-top: 1px solid $darkgentle;
+  bottom    : 0;
+  display   : flex;
+  left      : 0;
+  padding   : 5px;
+  position  : fixed;
+  right     : 0;
+  height    : 50px;
 }
 
-.chatbarMessage,
-.chatbarUsername {
-  border: 1px solid black;
-  display: block;
-  height: 40px;
-  line-height: 40px;
-  margin: 5px;
-  padding: 0 9px;
+.message-input,
+.username-input {
+  color        : $riverblue;
+  border       : 1px solid $darkgentle;
+  border-radius: .5em;
+  display      : block;
+  height       : 40px;
+  line-height  : 40px;
+  margin       : 5px;
+  padding      : 0 9px;
 }
 
-.chatbar-message {
-  flex: 8;
-}
-
-.chatbar-username {
-  flex: 2;
+.messages {
+  min-height    : calc(100vh - 150px);
+  display       : flex;
+  flex-direction: column;
+  align-items   : flex-start;
+  overflow      : scroll;
+  width         : 100%
 }
 
 .message {
   display: flex;
+  flex-wrap: wrap;
   padding: 5px;
+  word-break: break-all;
+  margin: 5px;
 }
 
 .message.system {
   font-style: italic;
-  padding: 5px 20px;
+  padding   : 5px 20px;
 }
 
 .message-content,
 .message-username {
   overflow: hidden;
-  margin: 5px;
-  padding: 5px 10px;
+  margin  : 5px;
+  padding : 5px 10px;
 }
 
 .message-content {
-  flex: 8;
+  height: 100%;
+  background: $lightgentle;
+  border-radius: 0 .5em .5em .5em;
+  // flex: 8;
 }
 
 .message-username {
-  flex: 2;
+  // flex       : 2;
   font-weight: 700;
 }
 
 .navbar {
-  background: tomato;
-  border-bottom: 1px solid black;
-  height: 60px;
-  left: 0;
-  padding: 0 10px;
-  position: fixed;
-  right: 0;
-  top: 0;
+  color          : $riverblue;
+  display        : flex;
+  width          : 100%;
+  justify-content: space-between;
+  align-items    : center;
+  background     : $gentlegreen;
+  border-bottom  : 1px solid $darkgentle;
+  height         : 60px;
+  padding        : 0 10px;
+  position       : fixed;
+  top            : 0;
 }
 
 .navbar-brand {
-  color: inherit;
-  display: block;
-  float: left;
-  font-weight: 700;
-  font-size: 28px;
-  height: 60px;
-  line-height: 60px;
-  padding: 0 10px;
+  color          : inherit;
+  display        : block;
+  float          : left;
+  font-weight    : 700;
+  font-size      : 28px;
+  height         : 60px;
+  line-height    : 60px;
+  padding        : 0 10px;
   text-decoration: none;
+}
+
+.navbar-online {
+  margin-right: 20px;
+  color       : inherit;
+  font-style  : italic;
 }

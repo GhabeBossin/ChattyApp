@@ -18,7 +18,7 @@ class App extends Component {
     this.handleMessageSub = this.handleMessageSub.bind(this)
     this.handleNameSub    = this.handleNameSub.bind(this)
     this.checkForAlphaNum = this.checkForAlphaNum.bind(this)
-  ;}
+  }
 
   componentDidMount() {
     this.socket = new WebSocket(
@@ -52,11 +52,11 @@ class App extends Component {
         return false
       }
     }
-    return true;
+    return true
   }
 
   handleNameSub(event) {
-    if (event.key !== 'Enter') {
+    if (event.key !== 'Enter' && event.key !== 'Tab') {
       return
     } else if (event.target.value.length < 1) {
       return
@@ -101,7 +101,7 @@ class App extends Component {
       <div className="container">
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
-          <span className="onlineCount">{this.state.clients} users online</span>
+          <span className="navbar-online">{this.state.clients} users online</span>
         </nav>
         <MessageList messages={this.state.messages} />
         <Chatbar currentUser={this.state.currentUser} handleNameSub={this.handleNameSub} handleMessageSub={this.handleMessageSub} />
@@ -110,4 +110,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default App

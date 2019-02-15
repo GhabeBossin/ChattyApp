@@ -18,25 +18,46 @@ const wss = new SocketServer({ server });
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
+  const clients = wss.clients;
+  console.log('on connection clientCount', clients.size);
+
+
   ws.on('message', function incoming(data) {
-    const parsedMsg   = JSON.parse(data);
-    if (parsedMsg.username === 'Anonymous') {
-      //apply sillyname instead, make sure each user keeps the same sillyname unless they change it.
-    }
-    const sendMsgBack = {
-      id      : uuidv1(),
-      type    : 'incomingMessage',
-      username: parsedMsg.username,
-      content : parsedMsg.content
-    }
-    const stringifyMsgBack = JSON.stringify(sendMsgBack);
-    wss.clients.forEach(function each(client) {
-      if (client.readyState === WebSocket.OPEN) { //client !== ws && 
-        client.send(stringifyMsgBack);
+    const parsedData = JSON.parse(data);
+    if (parsedData.type === 'postMessage') {
+      const incomingMessage = {
+        id      : uuidv1(),
+        type    : 'incomingMessage',
+        username: parsedData.username,
+        content : parsedData.content
       }
-    });
+      const stringifyData = JSON.stringify(incomingMessage);
+      wss.clients.forEach(function each(client) {
+        // if (client !== ws && client.readyState === WebSocket.OPEN) {
+          client.send(stringifyData);
+        // }
+      });
+    } else if (parsedData.type === 'postNotification') {
+      const incomingNotification = {
+        id      : uuidv1(),
+        type    : 'incomingNotification',
+        username: parsedData.username,
+        content : parsedData.content
+      }
+      const stringifyData = JSON.stringify(incomingNotification);
+      wss.clients.forEach(function each(client) {
+        // if (client !== ws && client.readyState === WebSocket.OPEN) {
+          client.send(stringifyData);
+        // }
+      });
+    }
   });
 
-  ws.on('close', () => console.log('Client disconnected'));
+  // ws.on('close', () => {} console.log('Client disconnected'));
+  ws.on('close', () => {} console.log('Client disconnected'));
+  le
+  console.log('on close clientCount', clients);
+
+
 });
 

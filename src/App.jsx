@@ -23,15 +23,15 @@ class App extends Component {
     );
     console.log('Yeah baby yeaaaah!');
     this.socket.onmessage = (event) => {
-      const returnedMsg = JSON.parse(event.data);
+      const parsedData = JSON.parse(event.data);
       let message = {
-        id      : returnedMsg.id,
-        type    : returnedMsg.type,
-        username: returnedMsg.username,
-        content : returnedMsg.content
+        id      : parsedData.id,
+        type    : parsedData.type,
+        username: parsedData.username,
+        content : parsedData.content
       }
       this.setState({
-        currentUser: {name: returnedMsg.username},
+        // currentUser: {name: parsedData.username}, why did I have this??
         messages   : [...this.state.messages, message]
       })
     }
@@ -41,27 +41,29 @@ class App extends Component {
     if (event.key !== 'Enter') {
       return
     }
-    let newCurrentUser = {name: event.target.value}
+    let newCurrentUser = {name: event.target.value};
+    let postNotification = {
+      type    : 'postNotification',
+      username: newCurrentUser.name,
+      content : `User ${this.state.currentUser.name} has changed their name to ${newCurrentUser.name}`
+    }
+    this.socket.send(JSON.stringify(postNotification))
+    console.log(this.state.currentUser.name, newCurrentUser)
     event.target.name === 'userField' ?
     this.setState({currentUser: newCurrentUser})
     : console.log('error: not userField');
-    const notificationToServer = {
-      type       : 'notification',
-      newUsername: newCurrentUser,
-      content    : event.target.value
-    }
-
   }
 
   handleMessageSub(event) {
     if (event.key !== 'Enter') {
       return
     }
-    const msgToServer = {
+    const postMessage = {
+      type    : 'postMessage',
       username: this.state.currentUser.name,
       content : event.target.value
     };
-    this.socket.send(JSON.stringify(msgToServer));
+    this.socket.send(JSON.stringify(postMessage));
     event.target.value = '';
   }
 

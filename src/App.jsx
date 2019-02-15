@@ -8,31 +8,29 @@ import sillyname from 'sillyname'
 
 class App extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      //generates sillyname for user until user sets their name
-      currentUser: {name: sillyname(), color: ['rebeccapurple', 'teal', 'green', 'orange']},
+      //generates sillyname by default until user sets their own
+      currentUser: {name: sillyname()},
       messages   : [],
       clients    : undefined
     }
     this.handleMessageSub = this.handleMessageSub.bind(this)
     this.handleNameSub    = this.handleNameSub.bind(this)
+    this.checkForAlphaNum = this.checkForAlphaNum.bind(this)
   ;}
 
   componentDidMount() {
     this.socket = new WebSocket(
       'ws://localhost:3001'
-    );
+    )
     console.log('Yeah baby yeaaaah!')
 
     this.socket.onmessage = (event) => {
-      const parsedData = JSON.parse(event.data);
+      const parsedData = JSON.parse(event.data)
 
       if (parsedData.type === 'incomingClientCount') {
-        let client = {
-          number  : parsedData.number
-        }
-
+        let client = {number: parsedData.number}
         this.setState({
           clients: client.number
         })
@@ -44,14 +42,11 @@ class App extends Component {
         username: parsedData.username,
         content : parsedData.content
       }
-      this.setState({
-        // currentUser: {name: event.target.value},
-        messages   : [...this.state.messages, message]
-      })
+      this.setState({messages: [...this.state.messages, message]})
     }
   }
 
-  checkForAlphaNum = value => {
+  checkForAlphaNum (value) {
     for(let char of value){
       if(char !== ' ') {
         return false
@@ -68,22 +63,26 @@ class App extends Component {
     } else if (this.checkForAlphaNum(event.target.value)) {
       return
     }
-    let newCurrentUser   = {name: event.target.value}
+
+    let newCurrentUserName   = {name: event.target.value}
     let postNotification = {
       type    : 'postNotification',
-      username: newCurrentUser.name,
-      content : `User ${this.state.currentUser.name} has changed their name to ${newCurrentUser.name}`
+      username: newCurrentUserName.name,
+      content : `User ${this.state.currentUser.name} has changed their name to ${newCurrentUserName.name}`
     }
-
     this.socket.send(JSON.stringify(postNotification))
 
-    event.target.name === 'userField' ?
-    this.setState({currentUser: newCurrentUser})
-    : console.log('error: not userField');
+    if (event.target.name === 'userField') {
+      this.setState({currentUser: newCurrentUserName})
+    }
   }
 
   handleMessageSub(event) {
     if (event.key !== 'Enter') {
+      return
+    } else if (event.target.value.length < 1) {
+      return
+    } else if (this.checkForAlphaNum(event.target.value)) {
       return
     }
 
@@ -92,8 +91,8 @@ class App extends Component {
       username: this.state.currentUser.name,
       content : event.target.value
     }
+    this.socket.send(JSON.stringify(postMessage))
 
-    this.socket.send(JSON.stringify(postMessage));
     event.target.value = ''
   }
 

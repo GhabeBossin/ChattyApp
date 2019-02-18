@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 // App
 import React, { Component } from 'react'
 import MessageList from './MessageList.jsx'
@@ -21,10 +19,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.socket = new WebSocket(
-      'ws://localhost:3001'
-    )
-    console.log('Yeah baby yeaaaah!')
+    this.socket = new WebSocket('ws://localhost:3001')
 
     this.socket.onmessage = (event) => {
       const parsedData = JSON.parse(event.data)

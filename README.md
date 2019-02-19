@@ -3,15 +3,15 @@ ChattyApp
 
 A single page chat application built with react for a lighthouse labs bootcamp project.
 
-<!-- add image examples -->
-<!-- add a gif -->
+![chatty](chatty.png)
 
 #### Features:
 * Real time instant messaging
 * Randomly generates silly usename for each new user, until...
 * User may set their own custom username
 * Notifies other users when username is updated
-* Online user count
+* 
+* currently online user count
 
 ### Start Me Up!
 

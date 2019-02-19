@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+// message for message list
 class Message extends Component {
   render() {
     return (

@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, {Component} from 'react'
 
 class Chatbar extends Component {
@@ -14,5 +13,3 @@ class Chatbar extends Component {
 }
 
 export default Chatbar
-
-{/* DON'T DELETE: defaultValue={this.props.currentUser.name} */}

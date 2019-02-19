@@ -1,4 +1,3 @@
-// App
 import React, { Component } from 'react'
 import MessageList from './MessageList.jsx'
 import Chatbar from './Chatbar.jsx'
@@ -96,9 +95,12 @@ class App extends Component {
       <div className="container">
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
+
           <span className="navbar-online">{this.state.clients} users online</span>
         </nav>
+
         <MessageList messages={this.state.messages} />
+
         <Chatbar currentUser={this.state.currentUser} handleNameSub={this.handleNameSub} handleMessageSub={this.handleMessageSub} />
       </div>
     )

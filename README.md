@@ -8,9 +8,8 @@ ChattyApp
 #### Features:
 * Real time instant messaging
 * Randomly generates silly usename for each new user, until...
-* User may set their own custom username
+* User may set their own custom username (using 'Enter' or 'Tab')
 * Notifies other users when username is updated
-* 
 * currently online user count
 
 ### Start Me Up!

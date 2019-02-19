@@ -1,47 +1,33 @@
-React Boilerplate
+ChattyApp
 =====================
 
-<!-- TODO: check all dependencies at end of project and remove them if not using anymore (randomstring, sillyname) -->
+A single page chat application built with react for a lighthouse labs bootcamp project.
 
-A minimal and light dev environment for ReactJS.
+<!-- add image examples -->
+<!-- add a gif -->
 
-### Usage
+#### Features:
+* Real time instant messaging
+* Randomly generates silly usename for each new user, until...
+* User may set their own custom username
+* Notifies other users when username is updated
+* Online user count
 
-Clone the boilerplate and create your own git repo.
+### Start Me Up!
 
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
-
-Install the dependencies and start the server.
-
-```
-npm install
-npm start
-open http://localhost:3000
-```
-
-### Static Files
-
-You can store static files like images, fonts, etc in the `build` folder.
-
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
-
-### Linting
-
-This boilerplate project includes React ESLint configuration.
-
-```
-npm run lint
-```
+1. Clone this repo: `git clone https://github.com/GhabeBossin/ChattyApp chatty`
+2. run `npm install` in that directory to install all dependencies
+3. run `npm run socket`, then `npm start`
+4. then navigate to http://localhost:3000 in your browser.
 
 ### Dependencies
 
 * React
 * Webpack
-* [babel-loader](https://github.com/babel/babel-loader)
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+* Webpack
+* Babel
+* node/node-sass/sass-loader/css-loader
+* uuid/v1
+* Express.js
+* Node.js
+* Sillyname

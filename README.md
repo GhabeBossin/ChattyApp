@@ -1,7 +1,7 @@
 ChattyApp
 =====================
 
-A single page chat application built with react for a lighthouse labs bootcamp project.
+**A single page chat application built with react for a lighthouse labs bootcamp project.**
 
 ![chatty](chatty.png)
 

@@ -12,14 +12,17 @@ class App extends Component {
       messages   : [],
       clients    : undefined
     }
+    // bind all methods
     this.handleMessageSub = this.handleMessageSub.bind(this)
     this.handleNameSub    = this.handleNameSub.bind(this)
     this.checkForAlphaNum = this.checkForAlphaNum.bind(this)
   }
 
   componentDidMount() {
+    //new websocket instance
     this.socket = new WebSocket('ws://localhost:3001')
 
+    //on recieving message from server, seperate and assign data, then set state respectively
     this.socket.onmessage = (event) => {
       const parsedData = JSON.parse(event.data)
 
@@ -40,6 +43,7 @@ class App extends Component {
     }
   }
 
+  //helper method for input validation
   checkForAlphaNum (value) {
     for(let char of value){
       if(char !== ' ') {
@@ -50,6 +54,7 @@ class App extends Component {
   }
 
   handleNameSub(event) {
+    //validate
     if (event.key !== 'Enter' && event.key !== 'Tab') {
       return
     } else if (event.target.value.length < 1) {
@@ -58,14 +63,17 @@ class App extends Component {
       return
     }
 
+    //set visible username
     let newCurrentUserName   = {name: event.target.value}
+    //create object data to send to server
     let postNotification = {
       type    : 'postNotification',
       username: newCurrentUserName.name,
       content : `User ${this.state.currentUser.name} has changed their name to ${newCurrentUserName.name}`
     }
+    //send to server
     this.socket.send(JSON.stringify(postNotification))
-
+    //specify which input
     if (event.target.name === 'userField') {
       this.setState({currentUser: newCurrentUserName})
     }
@@ -87,6 +95,7 @@ class App extends Component {
     }
     this.socket.send(JSON.stringify(postMessage))
 
+    //clear message field after sending to server
     event.target.value = ''
   }
 
@@ -98,9 +107,10 @@ class App extends Component {
 
           <span className="navbar-online">{this.state.clients} users online</span>
         </nav>
-
+        {/* creates custom MessageList element and passes desired props */}
         <MessageList messages={this.state.messages} />
 
+        {/* creates custom Chatbar Component and passes desired props */}
         <Chatbar currentUser={this.state.currentUser} handleNameSub={this.handleNameSub} handleMessageSub={this.handleMessageSub} />
       </div>
     )
